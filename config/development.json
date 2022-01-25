@@ -1,0 +1,7 @@
+{
+    "env": "local",
+    "server": {
+        "default": "http://localhost:3200",
+        "apiV1": "http://localhost:3200/api/v1"
+    }
+}
