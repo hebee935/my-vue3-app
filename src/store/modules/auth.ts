@@ -6,18 +6,18 @@ import { sign } from '../../api';
 import { RootState } from '../index';
 
 export interface AuthState {
-    me: IUser | null;
+    me: string | null;
     token: string | null;
 }
 
 export const AuthModule: Module<AuthState, RootState> = {
     state: {
-        me: JSON.parse(JSON.stringify(Cookies.get('me')) || 'null'),
+        me: Cookies.get('me') || null,
         token: Cookies.get('token') || null,
     },
     getters: {
         getMyInfo: state => {
-            return state.me;
+            return JSON.parse(state.me || 'null');
         },
         getToken: state => {
             return state.token;
@@ -25,7 +25,7 @@ export const AuthModule: Module<AuthState, RootState> = {
     },
     mutations: {
         SET_USER(state, { user, token }) {
-            state.me = user;
+            state.me = JSON.stringify(user);
             state.token = token;
             Cookies.set('me', JSON.stringify(user));
             Cookies.set('token', token);

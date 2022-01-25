@@ -21,8 +21,8 @@ export default new Vuex.Store({
         AuthModule,
     },
     plugins: [
-        // createPersistedState({
-        //     // paths: ['AuthModule']
-        // }),
+         createPersistedState({
+             // paths: ['AuthModule']
+         }),
     ]
 });

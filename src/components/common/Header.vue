@@ -1,24 +1,44 @@
 <template>
 	<header>
-		<h1><router-link to="/" class="logo"><img alt="Vue logo" src="../../assets/logo.png" width="80"></router-link></h1>
-		<div class="sign">
-			<div v-if="getMyInfo">
-				<b-dropdown :text=getMyInfo?.nickname variant="outline-dark">
-					<b-dropdown-item @click="signout">Signout</b-dropdown-item>
-				</b-dropdown>
-			</div>
-			<div v-else>
-				<b-button @click="open" variant="outline-dark">Sign</b-button>
-			</div>
-		</div>
-		<div class="menuWrap">
-			<ul class="menu">
-				<li><router-link to="/card">CARD</router-link></li>
-				<li><router-link to="/todo">TODO</router-link></li>
-				<li><router-link to="/schedule">SCHEDULE</router-link></li>
-				<li><a href="javascript:;">메뉴4</a></li>
-			</ul>
-		</div>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand"><router-link to="/">MyVue3App</router-link></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link"><router-link to="/card">Card</router-link></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link"><router-link to="/todo">Todo</router-link></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link"><router-link to="/schedule">Schedule</router-link></a>
+                </li>
+            </ul>
+            <div class="d-flex">
+                <div v-if="getMyInfo">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            {{getMyInfo?.nickname}}님
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="#">Action</a></li>
+                            <li><a class="dropdown-item" href="#">Another action</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" @click="signout">SignOut</a></li>
+                        </ul>
+                    </li>
+                </div>
+                <div v-else>
+                    <button class="btn btn-outline-dark" @click="open">SignIn</button>
+                </div>
+            </div>
+            </div>
+        </div>
+        </nav>
 
 		<SignModal ref="signModal" />
 	</header>
@@ -55,12 +75,5 @@ export default defineComponent({
 </script>
 
 <style scoped>
-header{width:100%; text-align:center; position:relative; height:120px; border-bottom:1px solid #35495e}
-header h1{position:absolute; top:0; left:100px;}
-header ul.menu:after{display:block; clear:both; content:'';}
-header ul.menu{position:absolute; top:20px; right:50px;}
-header ul.menu li{float:left; padding:10px 20px; list-style:none;}
-header div.sign{position:absolute; top:-20px; right:60px;}
-
 a{text-decoration:none; color:#333;}
 </style>

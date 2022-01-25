@@ -6,6 +6,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import { } from 'bootstrap-vue-3';
 
 export default defineComponent({
     data() {
@@ -15,7 +16,7 @@ export default defineComponent({
         }
     },
     methods: {
-        onContext(ctx) {
+        onContext(ctx: any) {
             this.context = ctx
         }
     }

@@ -6,9 +6,11 @@ export interface ICard {
     user: string;
     title: string;
     contents?: string;
+    image?: string;
 }
 
 export interface ICardInput {
     title: string;
     contents?: string;
+    image?: string;
 }

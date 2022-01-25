@@ -5,13 +5,15 @@ import { RootState } from '../index';
 import { card } from '../../api';
 
 export interface CardState {
-    list: Array<ICard>
+    list: Array<ICard>;
+    card: ICard | undefined | null;
 }
 
 export const CardModule: Module<CardState, RootState> = {
-    state: {
+    state: () => ({
         list: [],
-    },
+        card: null,
+    }),
     getters: {
         getCardList: state => {
             return state.list;
@@ -20,6 +22,9 @@ export const CardModule: Module<CardState, RootState> = {
     mutations: {
         SET_CARDS(state, list) {
             state.list = list;
+        },
+        SET_CARD(state, id: string) {
+            state.card = state.list.find(card => card._id === id);
         },
         ADD_CARD(state, card: ICard) {
             state.list.push(card);
@@ -40,7 +45,10 @@ export const CardModule: Module<CardState, RootState> = {
         },
         async addCard({ commit, }, input) {
             const { success, data } = await card.createCard(input);
-            if (success) commit('ADD_CARD', data);
+            if (success) {
+                commit('ADD_CARD', data);
+                return data;
+            }
         },
         async updateCard({ commit, }, input) {
             const { success, data } = await card.updateCard(input._id, input);

@@ -1,12 +1,22 @@
 <template>
   <teleport to="#teleport-area">
-    <!-- Modal의 열리고 닫힘을 관리합니다. -->
-    <div class="backdrop" v-show="isOpen">
-      <span class="close" @click="close">X</span>
-      <div class="modal-container">
-        <!-- slot을 통해 BaseComponent를 확장시킵니다. -->
-        <slot></slot>
-      </div>
+    <div v-show="isOpen" class="modal show" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-modal="true" style="display:block;">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <slot></slot>
+            <!--<div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button v-on:click="close" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <slot></slot>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>-->
+            </div>
+        </div>
     </div>
   </teleport>
 </template>
@@ -19,11 +29,12 @@ export default defineComponent({
     const isOpen = ref(false);
 
     const open = () => {
-      isOpen.value = true;
+        console.log('open!!')
+        isOpen.value = true;
     };
 
     const close = () => {
-      isOpen.value = false;
+        isOpen.value = false;
     };
 
     return {
@@ -36,22 +47,4 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.backdrop {
-  z-index: 999;
-  display: flex;
-  position: fixed;
-  align-items: center;
-  justify-content: center;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(#000000, 0.2);
-}
-.backdrop .modal-container {
-  background: white;
-  max-width: 320px;
-  width: 100%;
-  padding: 1.5rem;
-}
 </style>

@@ -1,79 +1,71 @@
 <template>
-  <Modal ref="signModal">
-    <div id="signin" v-show="page.signin">
-      <b-form @submit="signin">
-        <b-form-group
-          id="uid-group"
-          label="ID"
-          label-for="uid">
-          <b-form-input
-            id="uid"
-            v-model="form.uid"
-            placeholder="Enter ID"
-            required />
-        </b-form-group>
-        <b-form-group
-          id="password-group"
-          label="Password"
-          label-for="password">
-          <b-form-input
-            id="password"
-            v-model="form.password"
-            placeholder="Enter Password"
-            type="password"
-            required />
-        </b-form-group>
-        <div v-show="form.notFoundUser"><p>해당하는 유저를 찾을 수 없습니다.</p></div>
-        <b-button type="submit" variant="primary">Signin</b-button>
-        <p>Or</p><p v-on:click="changePage('signup')">Sign Up</p> / <p v-on:click="changePage('findPassword')">Find Password</p>
-      </b-form>
-    </div>
-    <div id="signup" v-show="page.signup">
-      <p v-on:click="changePage('signin')">Back</p>
-      <b-form @submit="signup">
-        <b-form-group
-          id="uid-group"
-          label="ID"
-          label-for="uid">
-          <b-form-input
-            id="uid"
-            v-model="form.uid"
-            placeholder="Enter ID"
-            required />
-          <b-button v-on:click="checkUid">중복체크</b-button>
-          <div v-show="form.checkedUidMsg"><p>{{form.checkedUidMsg}}</p></div>
-        </b-form-group>
-        <b-form-group
-          id="password-group"
-          label="Password"
-          label-for="password">
-          <b-form-input
-            id="password"
-            v-model="form.password"
-            placeholder="Enter Password"
-            type="password"
-            required />
-          <b-form-input
-            id="password-check"
-            v-model="form.repassword"
-            placeholder="Check Password"
-            type="password"
-            required />
-          <div v-show="form.notMatchedPW"><p>패스워드가 일치하지 않습니다.</p></div>
-        </b-form-group>
-        <b-form-group
-          id="nickname-group"
-          label="Nickname"
-          label-for="nickname">
-          <b-form-input
-            id="nickname"
-            v-model="form.nickname"
-            placeholder="Enter Nickname"
-            required />
-        </b-form-group>
-        <b-button type="submit" variant="primary">Signup</b-button>
-      </b-form>
-    </div>
+    <Modal ref="signModal">
+        <div v-show="page.signin">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Sign In</h5>
+                <button @click="close" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form :class=form.validation novalidate>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="uid" v-model="form.uid" placeholder="ID" required>
+                        <label for="uid">ID</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="password" class="form-control" id="password" v-model="form.password" placeholder="Password" required>
+                        <label for="password">Password</label>
+                    </div>
+                    <div class="mb-3" v-show="form.notFoundUser">입력하신 데이터와 일치하는 유저가 존재하지 않습니다.</div>
+                    <div class="col-sm">
+                        <button type="button" @click="signin" class="btn btn-outline-dark" data-bs-dismiss="modal">Sign In</button>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <div class="mx-auto">
+                    <p v-on:click="changePage('signup')">Or Sign Up</p>
+                </div>
+            </div>
+        </div>
+        <div v-show="page.signup">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Sign Up</h5>
+                <button @click="close" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form :class=form.validation novalidate>
+                    <div class="input-group mb-3">
+                        <div class="form-floating col-sm">
+                            <input type="text" class="form-control" id="uid" v-model="form.uid" placeholder="ID" aria-describedby="uid-check" required>
+                            <label for="uid">ID</label>
+                        </div>
+                        <button class="btn btn-outline-secondary" id="uid-check" type="button" @click="checkUid">중복체크</button>
+                    </div>
+                    <div class="mb-3" v-show="form.checkedUidMsg">{{form.checkedUidMsg}}</div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="nickname" v-model="form.nickname" placeholder="Nickname" required>
+                        <label for="nickname">Nickname</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="password" class="form-control" id="password" v-model="form.password" placeholder="Password" required>
+                        <label for="password">Password</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="password" class="form-control" id="repassword" v-model="form.repassword" placeholder="Password" required>
+                        <label for="repassword">Re Password</label>
+                    </div>
+                    <div class="mb-3" v-show="form.notMatchedPW">패스워드가 일치하지 않습니다.</div>
+                    <div class="col-sm">
+                        <button type="button" @click="signup" class="btn btn-outline-dark" data-bs-dismiss="modal">Sign Up</button>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <div class="mx-auto">
+                    <p v-on:click="changePage('signin')">Or Sign In</p>
+                </div>
+            </div>
+        </div>
   </Modal>
 </template>
 
@@ -83,6 +75,7 @@ import { defineComponent, ref, } from 'vue';
 import { useStore } from 'vuex';
 
 class Form {
+  validation: string;
   uid: string;
   password: string;
   repassword?: string;
@@ -93,6 +86,7 @@ class Form {
   checkedUidMsg: string | null;
 
   constructor() {
+    this.validation = 'needs-validation';
     this.uid = '';
     this.password = '';
     this.repassword = '';
@@ -102,9 +96,10 @@ class Form {
     this.notMatchedPW = false;
     this.checkedUidMsg = null;
   }
-  
+
   get() {
     return {
+      validation: this.validation,
       uid: this.uid,
       password: this.password,
       repassword: this.repassword,
@@ -143,23 +138,35 @@ export default defineComponent({
         changePage('signin');
         signModal.value?.open();
       };
+      const close = () => {
+        signModal.value?.close();
+      };
 
       const clear = () => {
         form.value = new Form().get();
       };
 
-      async function signin(): Promise<void> {
-        const result = await store.dispatch('signin', form.value);
-        if (result) signModal.value?.close();
-        else form.value.notFoundUser = true;
-        console.log(store.getters.getMyInfo)
+    async function signin(): Promise<void> {
+        if (!form.value.uid.length || !form.value.password.length) {
+            form.value.validation += ' was-validated';
+        } else {
+            const result = await store.dispatch('signin', form.value);
+            if (result) signModal.value?.close();
+            else form.value.notFoundUser = true;
+        }
       }
 
       async function signup(): Promise<void> {
-        if (form.value.uidChecked === false) {
+        let valid = true;
+        if (!form.value.uidChecked) {
+          valid = false;
           form.value.checkedUidMsg = '아이디 중복 확인을 해주세요.';
         } else if (form.value.password !== form.value.repassword) {
+          valid = false;
           form.value.notMatchedPW = true;
+        }
+        if (!valid) {
+            form.value.validation += ' was-validated';
         } else {
           const result = await store.dispatch('signup', form.value);
           if (result) signModal.value?.close();
@@ -172,7 +179,7 @@ export default defineComponent({
         form.value.checkedUidMsg = result ? '사용 가능한 아이디입니다.' : '이미 사용중인 아이디입니다.';
       }
 
-      return { signModal, open, page, changePage, signin, signup, form, checkUid, };
+      return { signModal, open, close, page, changePage, signin, signup, form, checkUid, };
     },
 });
 </script>

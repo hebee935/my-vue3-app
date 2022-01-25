@@ -33,6 +33,6 @@ export default createRouter({ //라우터 연결
             ,name: 'Schedule-calendar'
 			,component: () => import('@/components/schedule/Calendar.vue'),
 		}
-		
+
 	]
 })
