@@ -11,27 +11,27 @@ export default createRouter({ //라우터 연결
 		{
 			path:'/card'
             ,name: 'Card-list'
-			,component: () => import('@/components/card/List.vue'),
+			,component: () => import('@/components/card/CardList.vue'),
 		},
         {
 			path:'/card/create'
             ,name: 'Card-create'
-			,component: () => import('@/components/card/Input.vue'),
+			,component: () => import('@/components/card/CardInput.vue'),
 		},
 		{
 			path:'/card/:cardid'
             ,name: 'Card-detail'
-			,component: () => import('@/components/card/Detail.vue'),
+			,component: () => import('@/components/card/CardDetail.vue'),
 		},
         {
 			path:'/todo'
             ,name: 'Todo-list'
-			,component: () => import('@/components/todo/List.vue'),
+			,component: () => import('@/components/todo/TodoList.vue'),
 		},
 		{
 			path:'/schedule'
             ,name: 'Schedule-calendar'
-			,component: () => import('@/components/schedule/Calendar.vue'),
+			,component: () => import('@/components/schedule/ScheduleCalendar.vue'),
 		}
 
 	]

@@ -46,7 +46,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, } from 'vue';
-import SignModal from '../sign/signModal.vue';
+import SignModal from '@/components/sign/SignModal.vue';
 
 export default defineComponent({
 	components: {

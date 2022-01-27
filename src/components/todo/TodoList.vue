@@ -17,7 +17,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import TodoInput from './Input.vue';
+import TodoInput from './TodoInput.vue';
 
 export default defineComponent({
     components: {

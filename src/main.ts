@@ -1,15 +1,14 @@
 import { createApp } from 'vue';
-import "bootstrap";
-import "bootstrap/dist/css/bootstrap.min.css";
-
 import App from './App.vue';
 import router from './router';
 import store from './store';
+import vuetify from './plugins/vuetify';
+import { loadFonts } from './plugins/webfontloader';
 
-const app = createApp(App);
-app.use(router);
-app.use(store);
-app.component("modal", {
-    template: "#modal-template"
-});
-app.mount('#app');
+loadFonts()
+
+createApp(App)
+  .use(vuetify)
+  .use(router)
+  .use(store)
+  .mount('#app');

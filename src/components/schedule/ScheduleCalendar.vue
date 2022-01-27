@@ -6,7 +6,6 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { } from 'bootstrap-vue-3';
 
 export default defineComponent({
     data() {

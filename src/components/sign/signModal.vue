@@ -113,73 +113,73 @@ class Form {
 }
 
 export default defineComponent({
-    components: {
-        Modal,
-    },
-    setup() {
-      const store = useStore();
-      const signModal = ref<null | { open: () => null, close: () => null, }>(null);
-      const page = ref<{ [key: string]: Boolean }>({
-        signin: true,
-        signup: false,
-        findPassword: false,
+  components: {
+      Modal,
+  },
+  setup() {
+    const store = useStore();
+    const signModal = ref<null | { open: () => null, close: () => null, }>(null);
+    const page = ref<{ [key: string]: Boolean }>({
+      signin: true,
+      signup: false,
+      findPassword: false,
+    });
+    const form = ref(new Form().get());
+
+    function changePage(pagename: string): void {
+      Object.keys(page.value).forEach(key => {
+        if (key === pagename) page.value[key] = true;
+        else page.value[key] = false;
       });
-      const form = ref(new Form().get());
+      clear();
+    }
 
-      function changePage(pagename: string): void {
-        Object.keys(page.value).forEach(key => {
-          if (key === pagename) page.value[key] = true;
-          else page.value[key] = false;
-        });
-        clear();
-      }
+    const open = () => {
+      changePage('signin');
+      signModal.value?.open();
+    };
+    const close = () => {
+      signModal.value?.close();
+    };
 
-      const open = () => {
-        changePage('signin');
-        signModal.value?.open();
-      };
-      const close = () => {
-        signModal.value?.close();
-      };
-
-      const clear = () => {
-        form.value = new Form().get();
-      };
+    const clear = () => {
+      form.value = new Form().get();
+    };
 
     async function signin(): Promise<void> {
-        if (!form.value.uid.length || !form.value.password.length) {
-            form.value.validation += ' was-validated';
-        } else {
-            const result = await store.dispatch('signin', form.value);
-            if (result) signModal.value?.close();
-            else form.value.notFoundUser = true;
-        }
+      if (!form.value.uid.length || !form.value.password.length) {
+          form.value.validation += ' was-validated';
+      } else {
+        const result = await store.dispatch('signin', form.value);
+        if (result) signModal.value?.close();
+        else form.value.notFoundUser = true;
       }
+    }
 
-      async function signup(): Promise<void> {
-        let valid = true;
-        if (!form.value.uidChecked) {
-          valid = false;
-          form.value.checkedUidMsg = '아이디 중복 확인을 해주세요.';
-        } else if (form.value.password !== form.value.repassword) {
-          valid = false;
-          form.value.notMatchedPW = true;
-        }
-        if (!valid) {
-            form.value.validation += ' was-validated';
-        } else {
-          const result = await store.dispatch('signup', form.value);
-          if (result) signModal.value?.close();
-        }
+    async function signup(): Promise<void> {
+      let valid = true;
+      if (!form.value.uidChecked) {
+        valid = false;
+        form.value.checkedUidMsg = '아이디 중복 확인을 해주세요.';
+      } else if (form.value.password !== form.value.repassword) {
+        valid = false;
+        form.value.notMatchedPW = true;
       }
-
-      async function checkUid(): Promise<void> {
-        const result = await store.dispatch('checkUid', form.value.uid);
-        form.value.uidChecked = result;
-        form.value.checkedUidMsg = result ? '사용 가능한 아이디입니다.' : '이미 사용중인 아이디입니다.';
+      if (!valid) {
+        form.value.validation += ' was-validated';
+      } else {
+        const result = await store.dispatch('signup', form.value);
+        if (result) signModal.value?.close();
       }
+    }
 
-      return { signModal, open, close, page, changePage, signin, signup, form, checkUid, };
-    },
+    async function checkUid(): Promise<void> {
+      const result = await store.dispatch('checkUid', form.value.uid);
+      form.value.uidChecked = result;
+      form.value.checkedUidMsg = result ? '사용 가능한 아이디입니다.' : '이미 사용중인 아이디입니다.';
+    }
+
+    return { signModal, open, close, page, changePage, signin, signup, form, checkUid, };
+  },
 });
 </script>
