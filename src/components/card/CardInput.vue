@@ -1,20 +1,19 @@
 <template>
-    <div>
-        <form>
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="title" v-model="title" placeholder="Title" required>
-                <label for="title">Title</label>
-            </div>
-            <div class="mb-3">
-                <input class="form-control" type="file" id="formFileMultiple" multiple>
-            </div>
-            <div class="form-floating mb-3">
-                <textarea class="form-control" id="contents" rows="5" v-model="contents" placeholder="Contents"></textarea>
-                <label for="contents">Contents</label>
-            </div>
-            <button v-on:click="addCardItem" class="btn btn-primary">Submit</button>
-        </form>
-    </div>
+  <v-card flat>
+    <v-card-header class="justify-end">
+      <v-btn @click="this.$router.go(-1)"><v-icon>mdi-close</v-icon></v-btn>
+    </v-card-header>
+    <v-card-text>
+      <v-form>
+        <v-text-field label="Title" v-model="title"/>
+        <v-textarea label="Contents" v-model="contents" auto-grow/>
+        <v-file-input multiple label="Files"></v-file-input>
+      </v-form>
+    </v-card-text>
+    <v-card-actions class="justify-end">
+      <v-btn class="justify-end" @click="addCardItem">Create</v-btn>
+    </v-card-actions>
+  </v-card>
 </template>
 
 <script lang="ts">

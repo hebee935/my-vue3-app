@@ -2,7 +2,13 @@
   <v-app>
     <Navigation/>
     <v-main>
-      <router-view/>
+      <v-container fluid>
+        <v-row justify="center" dense>
+          <v-col cols="12" sm="4">
+            <router-view/>
+          </v-col>
+        </v-row>
+      </v-container>
     </v-main>
     <Footer/>
   </v-app>

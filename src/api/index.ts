@@ -4,6 +4,7 @@ import Cookies from 'js-cookie';
 import config from '../../config';
 
 import sign from './sign';
+import user from './user';
 import card from './card';
 import todo from './todo';
 
@@ -21,4 +22,5 @@ export {
     sign,
     card,
     todo,
+    user,
 };

@@ -1,52 +1,26 @@
 <template>
-	<v-table>
-    <template v-slot:default>
-      <thead>
-        <tr>
-          <th class="text-left">
-            Title
-          </th>
-          <th class="text-left">
-            Calories
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          v-for="card in cardList"
-          :key="card._id"
-        >
-          <td>{{ card.title }}</td>
-          <td>{{ card.createdAt }}</td>
-        </tr>
-      </tbody>
-    </template>
-  </v-table>
-  <!-- <v-card
-    class="mx-auto"
-  >
-    <v-container fluid>
-      <v-row dense>
-        <v-col
-          v-for="card in cardList"
-          :key="card._id"
-          :cols="card.flex"
-        >
-          <v-card>
-            <v-img
-              :src="card.image"
-              class="white--text align-end"
-              gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
-              height="200px"
+  <v-card flat>
+    <v-card-header>
+      <v-card-header-text></v-card-header-text>
+      <v-btn @click="this.$router.push('/card/create')">Create</v-btn>
+    </v-card-header>
+    <v-card-text>
+      <v-table >
+        <template v-slot:default>
+          <tbody>
+            <tr
+              v-for="card in cardList"
+              :key="card._id"
+              @click="getDetailView(card._id)"
             >
-              <v-card-title v-text="card.title"/>
-              <v-card-text v-text="card.contents"/>
-            </v-img>
-          </v-card>
-        </v-col>
-      </v-row>
-    </v-container>
-  </v-card> -->
+              <td class="text-subtitle-1">{{ card.title }}</td>
+              <td>{{ card.createdAt }}</td>
+            </tr>
+          </tbody>
+        </template>
+      </v-table>
+    </v-card-text>
+  </v-card>
 </template>
 
 <script lang="ts">
@@ -55,35 +29,38 @@ import { ICard } from '../../interfaces/card';
 import { timeForToday } from '../../lib/utils';
 
 export default defineComponent({
-    created() {
-        this.$store.dispatch('getCards');
+  created() {
+    this.$store.dispatch('setCards');
+  },
+  data() {
+    return {
+      fields: ['title', 'createdAt'],
+    }
+  },
+  computed: {
+    cardList() {
+        const cards = this.$store.getters.getCardList;
+        return cards.map((card: ICard) => {
+            const contents = card.contents?.slice(0, 50);
+            return {
+                _id: card._id,
+                title: card.title,
+                image: card.image,
+                createdAt: card.createdAt,
+                contents: contents && contents.length >= 50 ? contents + '...' : contents,
+            };
+        });
     },
-    data() {
-        return {
-            fields: ['title', 'createdAt'],
-        }
+    getMyInfo() {
+      return this.$store.getters.getMyInfo;
+    }
+  },
+  methods: {
+    timeForToday,
+    getDetailView(cardid: string) {
+      this.$router.push(`/card/${cardid}`);
     },
-    computed: {
-        cardList() {
-            const cards = this.$store.getters.getCardList;
-            return cards.map((card: ICard) => {
-                const contents = card.contents?.slice(0, 50);
-                return {
-                    _id: card._id,
-                    title: card.title,
-                    image: card.image,
-                    createdAt: card.createdAt,
-                    contents: contents && contents.length >= 50 ? contents + '...' : contents,
-                };
-            });
-        },
-        getMyInfo() {
-			return this.$store.getters.getMyInfo;
-		}
-    },
-    methods: {
-        timeForToday,
-    },
+  },
 
 });
 </script>

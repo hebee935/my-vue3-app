@@ -6,21 +6,21 @@ import { sign } from '../../api';
 import { RootState } from '../index';
 
 export interface AuthState {
-    me: string | null;
-    token: string | null;
+    me: string | undefined;
+    token: string | undefined;
 }
 
 export const AuthModule: Module<AuthState, RootState> = {
     state: {
-        me: Cookies.get('me') || null,
-        token: Cookies.get('token') || null,
+        me: Cookies.get('me'),
+        token: Cookies.get('token'),
     },
     getters: {
         getMyInfo: state => {
-            return JSON.parse(state.me || 'null');
+          return state.me && state.me !== 'undefined' ? JSON.parse(state.me) : null;
         },
         getToken: state => {
-            return state.token;
+          return state.token;
         },
     },
     mutations: {
@@ -31,8 +31,8 @@ export const AuthModule: Module<AuthState, RootState> = {
             Cookies.set('token', token);
         },
         SIGNOUT(state) {
-            state.me = null;
-            state.token = null;
+            state.me = '';
+            state.token = '';
             Cookies.remove('me');
             Cookies.remove('token');
         }
