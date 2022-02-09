@@ -1,13 +1,13 @@
 <template>
-  <v-card flat>
+  <v-card flat class="full-height">
     <v-card-header class="justify-end">
-      <v-btn @click="this.$router.go(-1)"><v-icon>mdi-close</v-icon></v-btn>
+      <v-btn @click="this.$router.push('/card')"><v-icon>mdi-close</v-icon></v-btn>
     </v-card-header>
     <v-card-text>
       <v-form>
         <v-text-field label="Title" v-model="title"/>
-        <v-textarea label="Contents" v-model="contents" auto-grow/>
-        <v-file-input multiple label="Files"></v-file-input>
+        <!-- <v-file-input multiple label="Files"></v-file-input> -->
+        <Tiptap ref="editor" :contents="contents"/>
       </v-form>
     </v-card-text>
     <v-card-actions class="justify-end">
@@ -17,23 +17,39 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, ref, } from 'vue';
+import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
+import Tiptap from '@/components/tiptap/Editor.vue';
 
 export default defineComponent({
-    data() {
-        return {
-            title: '',
-            contents: ''
-        }
-    },
+  components: {
+    Tiptap,
+  },
+  setup() {
+    const store = useStore();
+    const router = useRouter();
 
-    methods: {
-        async addCardItem() {
-            const card = await this.$store.dispatch('addCard', { title: this.title, contents: this.contents });
-            console.log(card);
-            this.$router.push('/card/' + card._id);
-        },
+    const title = ref('');
+    const editor = ref<null | { getHTML: () => string }>(null);
+
+    async function addCardItem() {
+      const contents = editor.value?.getHTML() || '';
+      const newcard = await store.dispatch('addCard', { title: title.value, contents, });
+      router.push('/card/' + newcard._id);
     }
+    return {
+      title,
+      editor,
+      addCardItem,
+    };
+  },
 
 });
 </script>
+
+<style scoped>
+.full-height {
+  height:100%
+}
+</style>

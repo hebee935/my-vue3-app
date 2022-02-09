@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory, } from 'vue-router';
 
 export default createRouter({ //라우터 연결
-    history : createWebHistory(),
+  history : createWebHistory(),
 	routes:[
 		{
 			path:'/'
@@ -22,6 +22,11 @@ export default createRouter({ //라우터 연결
 			path:'/card/:cardid'
             ,name: 'Card-detail'
 			,component: () => import('@/components/card/CardDetail.vue'),
+		},
+    {
+			path:'/card/:cardid/update'
+            ,name: 'Card-update'
+			,component: () => import('@/components/card/CardUpdate.vue'),
 		},
         {
 			path:'/todo'

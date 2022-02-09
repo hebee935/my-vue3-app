@@ -2,7 +2,7 @@
   <v-card flat>
     <v-card-header>
       <v-card-header-text></v-card-header-text>
-      <v-btn @click="this.$router.push('/card/create')">Create</v-btn>
+      <v-btn v-if="getMyInfo" @click="this.$router.push('/card/create')">Create</v-btn>
     </v-card-header>
     <v-card-text>
       <v-table >

@@ -40,16 +40,15 @@ export const UserModule: Module < UserState, RootState > = {
         if (success) commit('SET_USERS', data);
       });
     },
-    setUserOne({ commit, state }, userid) {
+    async setUserOne({ commit, state }, userid) {
       const findUser = state.list.find(user => user._id === userid);
       if (findUser) commit('SET_USER', findUser);
       else {
-        user.getUserOne(userid).then(({ success, data }) => {
-          if (success) {
-            commit('ADD_USER', data);
-            commit('SET_USER', data);
-          }
-        });
+        const { success, data } = await user.getUserOne(userid);
+        if (success) {
+          commit('ADD_USER', data);
+          commit('SET_USER', data);
+        }
       }
     },
     // updateUser({

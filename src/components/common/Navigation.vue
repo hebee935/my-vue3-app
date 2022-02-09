@@ -8,7 +8,7 @@
 
     <v-toolbar-title>Vue3Project</v-toolbar-title>
     <v-spacer></v-spacer>
-    <div v-if="getMyInfo">
+    <div v-if="me">
       <v-menu
         top
         :close-on-content-click="closeOnContentClick"
@@ -17,7 +17,7 @@
           <v-btn
             v-bind="props"
           >
-            {{getMyInfo?.nickname}}님
+            {{me?.nickname}}님
           </v-btn>
         </template>
 
@@ -63,7 +63,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, } from 'vue';
+import { computed, defineComponent, ref, } from 'vue';
+import { useStore } from 'vuex';
+
 import SignDialog from '@/components/sign/SignDialog.vue';
 
 export default defineComponent ({
@@ -71,25 +73,30 @@ export default defineComponent ({
     SignDialog,
   },
   setup () {
+    const store = useStore();
     const dialog = ref<null | { open: () => null }>(null);
     const open = () => dialog.value?.open();
-    return { dialog, open, };
+    const me = computed(() => store.getters.getMyInfo);
+    const signout = () => store.commit('SIGNOUT');
+
+    return {
+      dialog,
+      open,
+      me,
+      signout,
+
+      // drawer: false,
+      // group: null,
+      // closeOnContentClick: true,
+    };
   },
-  data: () => ({
-    drawer: false,
-    group: null,
-    closeOnContentClick: true,
-  }),
-  computed: {
-    getMyInfo() {
-			return this.$store.getters.getMyInfo;
-		}
-  },
-  methods: {
-    signout() {
-			this.$store.commit('SIGNOUT');
-		}
-  },
+  data() {
+    return {
+      drawer: false,
+      group: null,
+      closeOnContentClick: true,
+    }
+  }
 })
 </script>
 

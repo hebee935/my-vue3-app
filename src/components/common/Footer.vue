@@ -1,5 +1,5 @@
 <template>
-  <v-footer app>
+  <v-footer app class="pa-0">
     <v-card
       elevation="0"
       rounded="0"

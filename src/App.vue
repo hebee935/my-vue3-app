@@ -1,9 +1,9 @@
 <template>
-  <v-app>
+  <v-app full-height>
     <Navigation/>
-    <v-main>
-      <v-container fluid>
-        <v-row justify="center" dense>
+    <v-main class="full-height">
+      <v-container fluid class="full-height">
+        <v-row justify="center" no-gutters class="full-height">
           <v-col cols="12" sm="4">
             <router-view/>
           </v-col>
@@ -28,11 +28,13 @@ export default defineComponent({
   },
   data () {
     return {
-      //
     }
   },
 })
 </script>
 
-<style lang="scss">
+<style scoped>
+.full-height {
+  height:100%
+}
 </style>

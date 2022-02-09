@@ -19,7 +19,6 @@ export const CardModule: Module<CardState, RootState> = {
       return state.list;
     },
     getCardOne: state => {
-      console.log('getCardOne', state.card);
       return state.card;
     }
   },
@@ -48,16 +47,15 @@ export const CardModule: Module<CardState, RootState> = {
         if (success) commit('SET_CARDS', data);
       });
     },
-    setCardOne({ commit, state }, cardid) {
+    async setCardOne({ commit, state }, cardid) {
       const findCard = state.list.find(card => card._id === cardid);
       if (findCard) commit('SET_CARD', findCard);
       else {
-        card.getCardOne(cardid).then(({ success, data }) => {
-          if (success) {
-            commit('ADD_CARD', data);
-            commit('SET_CARD', data);
-          }
-        });
+        const { success, data } = await card.getCardOne(cardid);
+        if (success) {
+          commit('ADD_CARD', data);
+          commit('SET_CARD', data);
+        }
       }
     },
     async addCard({ commit, }, input) {
@@ -72,8 +70,8 @@ export const CardModule: Module<CardState, RootState> = {
         if (success) commit('UPDATE_CARD', data);
     },
     async deleteCard({ commit, }, id) {
-        const success = await card.deleteCard(id);
-        if (success) commit('DELETE_CARD', id);
+      const success = await card.deleteCard(id);
+      if (success) commit('DELETE_CARD', id);
     }
   },
 };

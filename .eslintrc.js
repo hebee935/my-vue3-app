@@ -14,6 +14,8 @@ module.exports = {
   },
   rules: {
     "no-unused-vars": "off",
+    "vue/no-dupe-keys": "off",
+    "vue/no-mutating-props": "off",
     "vue/multi-word-component-names": "off",
     "vue/no-reserved-keys": "off"
   },
