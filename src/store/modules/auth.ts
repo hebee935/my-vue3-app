@@ -18,7 +18,7 @@ export const AuthModule: Module<AuthState, RootState> = {
   },
   getters: {
     getMyInfo: state => {
-      return state.me && state.me !== 'undefined' ? JSON.parse(state.me) : null;
+      return state.me;
     },
     getToken: state => {
       return state.token;
@@ -26,9 +26,9 @@ export const AuthModule: Module<AuthState, RootState> = {
   },
   mutations: {
     SET_USER(state, { user, token }) {
-      state.me = JSON.stringify(user);
+      state.me = user;
       state.token = token;
-      cookies.set('me', JSON.stringify(user));
+      cookies.set('me', user);
       cookies.set('token', token);
     },
     SIGNOUT(state) {
@@ -39,17 +39,13 @@ export const AuthModule: Module<AuthState, RootState> = {
     }
   },
   actions: {
-    async signin({ commit }, input: ISignInInput): Promise<boolean> {
+    async signin({ commit }, input: ISignInInput) {
       const { success, data } = await sign.signin(input);
       if (success) commit('SET_USER', data);
-      return success;
     },
-    async signup({ commit }, input: ISignUpInput): Promise<boolean> {
+    async signup({ commit }, input: ISignUpInput) {
       const { success, data } = await sign.signup(input);
-      if (success) {
-          commit('SET_USER', data);
-      }
-      return success;
+      if (success) commit('SET_USER', data);
     },
     async checkUid(_, uid: string): Promise<boolean> {
       const { success, } = await sign.checkUid(uid);

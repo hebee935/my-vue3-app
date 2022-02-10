@@ -7,20 +7,22 @@ import sign from './sign';
 import user from './user';
 import card from './card';
 import todo from './todo';
+import comment from './comment';
 
 export const authHeader = () => {
-    const token = Cookies.get('token');
-    return { Authorization: 'Bearer ' + token, };
+  const token = Cookies.get('token');
+  return { Authorization: 'Bearer ' + token, };
 };
 
 export const api = axios.create({
-    baseURL: config.server.apiV1,
-    headers: authHeader(),
+  baseURL: config.server.apiV1,
+  headers: authHeader(),
 });
 
 export {
-    sign,
-    card,
-    todo,
-    user,
+  sign,
+  card,
+  todo,
+  user,
+  comment,
 };

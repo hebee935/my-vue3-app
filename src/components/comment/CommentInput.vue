@@ -1,25 +1,49 @@
 <template>
-  <v-form>
-    <v-textarea label="Comment" v-model="contents" rows="2"/>
+  <v-card flat variant="outlined" class="mx-auto">
+    <v-card-text>
+    <p class="font-weight-bold">{{me.nickname}}</p>
+    <v-textarea v-model="comment.message" rows="1" auto-grow/>
     <v-btn @click="addCommentItem" text>Add</v-btn>
-  </v-form>
+    </v-card-text>
+  </v-card>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { computed, defineComponent, ref, } from 'vue';
+import { useStore } from 'vuex';
 
 export default defineComponent({
-    data() {
-        return {
-            contents: ''
-        }
+  props: {
+    card: {
+      type: String,
+      required: true,
     },
-    methods: {
-        async addCommentItem() {
-            // const card = await this.$store.dispatch('addCard', { contents: this.contents });
-            // console.log(card);
-        },
+    parent: {
+      type: String,
+      default: null,
     }
+  },
+  setup(props) {
+    const store = useStore();
+
+    const comment = ref({
+      message: '',
+      parent: props.parent,
+      card: props.card,
+    });
+
+    async function addCommentItem() {
+      await store.dispatch('addComment', comment.value);
+      comment.value.message = '';
+    }
+    const me = computed(() => store.getters.getMyInfo);
+
+    return {
+      me,
+      comment,
+      addCommentItem,
+    }
+  }
 
 });
 </script>

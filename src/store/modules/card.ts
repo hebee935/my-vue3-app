@@ -42,10 +42,9 @@ export const CardModule: Module<CardState, RootState> = {
     },
   },
   actions: {
-    setCards({ commit, }) {
-      card.getCardList().then(({ success, data }) => {
-        if (success) commit('SET_CARDS', data);
-      });
+    async setCards({ commit, }) {
+      const { success, data } = await card.getCardList();
+      if (success) commit('SET_CARDS', data);
     },
     async setCardOne({ commit, state }, cardid) {
       const findCard = state.list.find(card => card._id === cardid);

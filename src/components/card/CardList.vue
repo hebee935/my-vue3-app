@@ -14,6 +14,7 @@
               @click="getDetailView(card._id)"
             >
               <td class="text-subtitle-1">{{ card.title }}</td>
+              <td class="text-subtitle-1">{{ card.user.nickname }}</td>
               <td>{{ card.createdAt }}</td>
             </tr>
           </tbody>
@@ -32,11 +33,6 @@ export default defineComponent({
   created() {
     this.$store.dispatch('setCards');
   },
-  data() {
-    return {
-      fields: ['title', 'createdAt'],
-    }
-  },
   computed: {
     cardList() {
         const cards = this.$store.getters.getCardList;
@@ -46,6 +42,7 @@ export default defineComponent({
                 _id: card._id,
                 title: card.title,
                 image: card.image,
+                user: card.user,
                 createdAt: card.createdAt,
                 contents: contents && contents.length >= 50 ? contents + '...' : contents,
             };
