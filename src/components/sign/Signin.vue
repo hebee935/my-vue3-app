@@ -41,6 +41,7 @@ export default defineComponent ({
     async signin() {
       await this.$store.dispatch('signin', this.form);
       this.$emit('close');
+      this.$router.go(0);
     }
   }
 });

@@ -59,6 +59,7 @@ export default defineComponent ({
     async signup() {
       await this.$store.dispatch('signup', this.form);
       this.$emit('close');
+      this.$router.go(0);
     }
   }
 });

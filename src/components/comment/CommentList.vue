@@ -23,7 +23,7 @@
         <v-table class="pl-6">
           <th class="text-left">
             <p>{{ child.user.nickname }}</p>
-            <p v-show="isWriter(parent.user._id)" class="writer">작성자</p>
+            <p v-show="isWriter(child.user._id)" class="writer">작성자</p>
           </th>
           <tr>{{ child.message }}</tr>
           <tr>

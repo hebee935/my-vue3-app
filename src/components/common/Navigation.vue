@@ -6,7 +6,7 @@
   >
     <v-app-bar-nav-icon size="small" @click="drawer = !drawer"></v-app-bar-nav-icon>
 
-    <v-toolbar-title>Vue3Project</v-toolbar-title>
+    <v-toolbar-title @click="this.$router.push('/')">Vue3Project</v-toolbar-title>
     <v-spacer></v-spacer>
     <div v-if="me">
       <v-menu
