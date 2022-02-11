@@ -1,31 +1,31 @@
 <template>
-    <div>
-        <input type="text" v-model="text">
-        <b-button v-on:click="addTodoItem">+</b-button>
-    </div>
+  <div>
+    <v-text-field v-model="title" @keyup.enter="addTodoItem" full-width/>
+  </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import {useStore} from 'vuex';
+import { defineComponent, ref, } from 'vue';
 
 export default defineComponent({
-    data() {
-        return {
-            text: '',
-        }
-    },
+  setup() {
+    const store = useStore();
+    const title = ref('');
 
-    methods: {
-        addTodoItem():void {
-            if (this.text.length) {
-                this.$store.dispatch('addTodo', { text: this.text });
-                this.clearInput();
-            }
-        },
-        clearInput():void {
-            this.text = '';
-        },
+    const clearInput = () => title.value = '';
+    async function addTodoItem() {
+      if(title.value.length) {
+        await store.dispatch('addTodo', { title: title.value });
+        clearInput();
+      }
     }
+
+    return {
+      title,
+      addTodoItem,
+    }
+  },
 });
 
 </script>

@@ -1,11 +1,14 @@
 export interface ITodo {
-    _id: string;
-    createdAt: Date;
-    updatedAt: Date;
+  _id: string;
+  createdAt: Date;
+  updatedAt: Date;
 
-    text: string;
+  title: string;
+  status: string;
+  user: string|object;
 }
 
 export interface ITodoInput {
-    text: string;
+  text: string;
+  status?: string;
 }

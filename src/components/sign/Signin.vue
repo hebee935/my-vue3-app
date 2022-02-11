@@ -40,8 +40,7 @@ export default defineComponent ({
   methods: {
     async signin() {
       await this.$store.dispatch('signin', this.form);
-      console.log(this.$store.getters.getMyinfo)
-      if (this.$store.getters.getMyinfo) this.$emit('close');
+      this.$emit('close');
     }
   }
 });

@@ -58,8 +58,7 @@ export default defineComponent ({
   methods: {
     async signup() {
       await this.$store.dispatch('signup', this.form);
-      console.log(this.$store.user.state.me)
-      if (this.$store.user.state.me) this.$emit('close');
+      this.$emit('close');
     }
   }
 });

@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 export const timeForToday = (time: Date) => {
     const today = new Date();
     const timeValue = new Date(time);
@@ -22,4 +24,8 @@ export const timeForToday = (time: Date) => {
 
     if ((betweenTimeDay / 365) <= 1) return 'Last updated 1 year ago';
     return `Last updated ${Math.floor(betweenTimeDay / 365)} years ago`;
+};
+
+export const getDate = (date: Date) => {
+  return moment(date).format('YYYY.MM.DD');
 };

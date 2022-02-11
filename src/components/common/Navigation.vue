@@ -64,6 +64,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref, } from 'vue';
+import { useRouter, } from 'vue-router';
 import { useStore } from 'vuex';
 
 import SignDialog from '@/components/sign/SignDialog.vue';
@@ -74,10 +75,14 @@ export default defineComponent ({
   },
   setup () {
     const store = useStore();
+    const router = useRouter();
     const dialog = ref<null | { open: () => null }>(null);
     const open = () => dialog.value?.open();
     const me = computed(() => store.getters.getMyInfo);
-    const signout = () => store.commit('SIGNOUT');
+    const signout = () => {
+      store.commit('SIGNOUT');
+      router.go(0);
+    }
 
     return {
       dialog,

@@ -2,11 +2,6 @@
   <v-card
     flat
   >
-    <v-img
-      height="500"
-      v-show="card.image"
-      :src="card.image"
-    ></v-img>
     <v-card-header class="justify-end">
       <v-btn v-if="isMyItem" @click="updateCard" ><v-icon>mdi-wrench</v-icon></v-btn>
       <v-btn v-if="isMyItem" @click="open" ><v-icon>mdi-delete</v-icon></v-btn>
@@ -33,7 +28,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onBeforeMount, onMounted, ref, } from 'vue';
+import { computed, defineComponent, onBeforeMount, ref, } from 'vue';
 import { useRoute, useRouter, } from 'vue-router';
 import moment from 'moment';
 import { useStore } from 'vuex';
