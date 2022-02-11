@@ -23,7 +23,7 @@ export default defineComponent({
       default: null,
     }
   },
-  setup(props) {
+  setup(props, { emit }) {
     const store = useStore();
 
     const comment = ref({
@@ -35,6 +35,7 @@ export default defineComponent({
     async function addCommentItem() {
       await store.dispatch('addComment', comment.value);
       comment.value.message = '';
+      emit('success');
     }
     const me = computed(() => store.getters.getMyInfo);
 

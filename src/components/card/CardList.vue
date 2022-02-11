@@ -35,18 +35,18 @@ export default defineComponent({
   },
   computed: {
     cardList() {
-        const cards = this.$store.getters.getCardList;
-        return cards.map((card: ICard) => {
-            const contents = card.contents?.slice(0, 50);
-            return {
-                _id: card._id,
-                title: card.title,
-                image: card.image,
-                user: card.user,
-                createdAt: card.createdAt,
-                contents: contents && contents.length >= 50 ? contents + '...' : contents,
-            };
-        });
+      const cards = this.$store.getters.getCardList;
+      return cards.map((card: ICard) => {
+        const contents = card.contents?.slice(0, 50);
+        return {
+          _id: card._id,
+          title: card.title,
+          image: card.image,
+          user: card.user,
+          createdAt: card.createdAt,
+          contents: contents && contents.length >= 50 ? contents + '...' : contents,
+        };
+      });
     },
     getMyInfo() {
       return this.$store.getters.getMyInfo;

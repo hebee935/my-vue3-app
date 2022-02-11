@@ -30,15 +30,18 @@ export const CardModule: Module<CardState, RootState> = {
       state.card = card;
     },
     ADD_CARD(state, card: ICard) {
-        state.list.push(card);
+      state.list.push(card);
     },
     UPDATE_CARD(state, card: ICard) {
-        const idx = state.list.findIndex(c => c._id === card._id);
-        state.list[idx] = card;
+      const idx = state.list.findIndex(c => c._id === card._id);
+      state.list[idx] = card;
     },
     DELETE_CARD(state, id) {
-        const idx = state.list.findIndex(c => c._id === id);
-        state.list.splice(idx, 1);
+      const idx = state.list.findIndex(c => c._id === id);
+      state.list.splice(idx, 1);
+    },
+    CLEAR_CARD(state) {
+      state.card = null;
     },
   },
   actions: {

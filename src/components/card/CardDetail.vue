@@ -25,7 +25,7 @@
     <v-card-actions>
       <v-col sm="12">
         <div class="pb-5"><CommentInput :card="this.$route.params.cardid" /></div>
-        <div><CommentList :card="this.$route.params.cardid"/></div>
+        <div><CommentList :card="card"/></div>
       </v-col>
     </v-card-actions>
   </v-card>
@@ -33,7 +33,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, ref, } from 'vue';
+import { computed, defineComponent, onBeforeMount, onMounted, ref, } from 'vue';
 import { useRoute, useRouter, } from 'vue-router';
 import moment from 'moment';
 import { useStore } from 'vuex';
@@ -62,7 +62,7 @@ export default defineComponent({
       return me?._id === card.value.user._id;
     });
 
-    onMounted(async () => {
+    onBeforeMount(async () => {
       await store.dispatch('setCardOne', route.params.cardid);
     });
 

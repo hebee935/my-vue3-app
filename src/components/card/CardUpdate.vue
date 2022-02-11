@@ -17,7 +17,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted, } from 'vue';
+import { defineComponent, ref, onBeforeMount, } from 'vue';
 import { useStore } from 'vuex';
 import { useRouter, useRoute, } from 'vue-router';
 import Tiptap from '@/components/tiptap/Editor.vue';
@@ -36,10 +36,9 @@ export default defineComponent({
       loading: true,
     });
 
-    onMounted(async () => {
+    onBeforeMount(async () => {
       await store.dispatch('setCardOne', route.params.cardid);
       state.value.card = store.getters.getCardOne;
-      console.log(state.value.card)
     });
 
     const editor = ref<null | { getHTML: () => string }>(null);
