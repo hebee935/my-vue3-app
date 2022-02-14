@@ -1,48 +1,54 @@
 <template>
-  <v-card-title>Sign In</v-card-title>
-  <v-card-text>
-    <v-form>
-      <v-text-field v-model="v$.form.uid.$model" label="ID"/>
-      <v-text-field v-model="v$.form.password.$model" label="Password"/>
-      <v-btn class="mr-4" @click="signin" :disabled="v$.form.$invalid">Sign In</v-btn>
-    </v-form>
-  </v-card-text>
+  <div class="q-pa-md">
+    <q-form @submit="signin">
+      <q-input outlined v-model="form.uid" label="ID" :rules="rules.uid"/>
+      <q-input outlined :type="isPwd ? 'password' : 'text'" v-model="form.password" label="Password" :rules="rules.password">
+        <template v-slot:append>
+          <q-icon
+            :name="isPwd ? 'visibility_off' : 'visibility'"
+            class="cursor-pointer"
+            @click="isPwd = !isPwd"
+          />
+        </template>
+      </q-input>
+
+      <div class="row justify-end">
+        <q-btn label="Submit" type="submit" color="primary"/>
+      </div>
+    </q-form>
+  </div>
 </template>
 <script lang="ts">
-import { defineComponent, } from 'vue';
-import useVuelidate from "@vuelidate/core";
-import { required, } from '@vuelidate/validators';
+import { defineComponent, ref, } from 'vue';
+import { useStore } from 'vuex';
 
 export default defineComponent ({
-  setup() {
-    return { v$: useVuelidate(), };
-  },
-  data() {
-    return {
-      form: {
-        uid: '',
-        password: '',
-      },
+  setup(_, { emit }) {
+    const store = useStore();
+
+    const form = ref({
+      uid: '',
+      password: '',
+    });
+    const isPwd = ref(true);
+
+    const rules = {
+      uid: [ (val: string) => val && val.length > 0 || 'Please enter ID'],
+      password: [ (val: string) => val && val.length > 0 || 'Please enter Password'],
     };
-  },
-  validations() {
+
+    async function signin() {
+      await store.dispatch('signin', form.value);
+      emit('close');
+    }
+
     return {
-      form: {
-        uid: {
-          required,
-        },
-        password: {
-          required,
-        }
-      },
+      form,
+      isPwd,
+      rules,
+
+      signin,
     }
   },
-  methods: {
-    async signin() {
-      await this.$store.dispatch('signin', this.form);
-      this.$emit('close');
-      this.$router.go(0);
-    }
-  }
 });
 </script>

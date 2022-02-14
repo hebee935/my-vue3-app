@@ -3,7 +3,7 @@ export interface ICard {
   createdAt: Date;
   updatedAt: Date;
 
-  user: string|object;
+  user: any;
   title: string;
   contents?: string;
   image?: string;

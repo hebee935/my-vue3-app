@@ -1,61 +1,33 @@
 <template>
-	<v-card flat>
-    <v-card-header class="justify-end">
-      <v-card-header-text class="headline">Add Task</v-card-header-text>
-    </v-card-header>
-    <v-card-text>
-      <TodoInput/>
-      <v-list two-line flat>
-        <v-list-subheader>READY</v-list-subheader>
-        <draggable :list="todos.READY" group="todos" class="READY" @end="updateTodo">
-          <v-list-item v-for="todo in todos.READY" :key="todo._id" :id="todo._id">
-            <v-list-item-header>
-              <v-list-item-title>{{ todo.title }}</v-list-item-title>
-              <v-list-item-subtitle>Added on: {{getDate(todo.createdAt)}}</v-list-item-subtitle>
-            </v-list-item-header>
-            <v-btn fab small @click="removeTodoItem(todo._id)">
-              <v-icon>mdi-close</v-icon>
-            </v-btn>
-          </v-list-item>
+  <div class="q-ma-lg">
+    <TodoInput/>
+  </div>
+  <div class="row justify-around">
+    <q-list v-for="(s, index) in status" :key="index">
+      <div class="col">
+        <q-item-label header>{{s}}</q-item-label>
+        <draggable :list="todos[s]" group="todos" :class="s" @end="updateTodo">
+          <q-item v-for="todo in todos[s]" :key="todo._id" :id="todo._id">
+            <q-item-section v-if="edit===todo._id">
+              <TodoInput :todo="todo" @blur="clearEdit()"/>
+            </q-item-section>
+            <q-item-section v-else @click="editTodo(todo._id)">
+              <q-item-label>{{ todo.title }}</q-item-label>
+              <q-item-label caption>{{getDate(todo.updatedAt)}}</q-item-label>
+            </q-item-section>
+            <q-item-section side top>
+              <q-icon size="medium" name="clear" @click="removeTodoItem(todo._id)"/>
+            </q-item-section>
+          </q-item>
         </draggable>
-      </v-list>
-      <v-divider/>
-      <v-list two-line flat>
-        <v-list-subheader>PROGRESS</v-list-subheader>
-        <draggable :list="todos.PROGRESS" @end="updateTodo" group="todos" class="PROGRESS">
-          <v-list-item v-for="todo in todos.PROGRESS" :key="todo._id" :id="todo._id">
-            <v-list-item-header>
-              <v-list-item-title>{{ todo.title }}</v-list-item-title>
-              <v-list-item-subtitle>Added on: {{getDate(todo.createdAt)}}</v-list-item-subtitle>
-            </v-list-item-header>
-            <v-btn fab small @click="removeTodoItem(todo._id)">
-              <v-icon>mdi-close</v-icon>
-            </v-btn>
-          </v-list-item>
-        </draggable>
-      </v-list>
-      <v-divider/>
-      <v-list two-line flat>
-        <v-list-subheader>DONE</v-list-subheader>
-        <draggable :list="todos.DONE" @end="updateTodo" group="todos" class="DONE">
-          <v-list-item v-for="todo in todos.DONE" :key="todo._id" :id="todo._id">
-            <v-list-item-header>
-              <v-list-item-title>{{ todo.title }}</v-list-item-title>
-              <v-list-item-subtitle>Added on: {{getDate(todo.createdAt)}}</v-list-item-subtitle>
-            </v-list-item-header>
-            <v-btn fab small @click="removeTodoItem(todo._id)">
-              <v-icon>mdi-close</v-icon>
-            </v-btn>
-          </v-list-item>
-        </draggable>
-      </v-list>
-    </v-card-text>
-  </v-card>
+      </div>
+    </q-list>
+  </div>
 </template>
 
 <script lang="ts">
 import { ITodo } from '@/interfaces/todo';
-import { computed, defineComponent, onBeforeMount, } from 'vue';
+import { computed, defineComponent, onBeforeMount, ref, } from 'vue';
 import { useStore } from 'vuex';
 import { VueDraggableNext } from 'vue-draggable-next';
 
@@ -70,12 +42,21 @@ export default defineComponent({
   setup() {
     const store = useStore();
     onBeforeMount(async () => await store.dispatch('getTodos'));
+
     const todos = computed(() => {
       return store.getters.getTodoList.reduce((acc: any, curr: ITodo) => {
         acc[curr.status].push(curr);
         return acc;
       }, { READY: [], PROGRESS: [], DONE: [] });
     });
+
+    const edit = ref('');
+    function editTodo(todoid: string) {
+      edit.value = todoid;
+    }
+    function clearEdit() {
+      edit.value = '';
+    }
 
     async function removeTodoItem(todoid: string) {
       await store.dispatch('deleteTodo', todoid);
@@ -87,7 +68,11 @@ export default defineComponent({
     }
 
     return {
+      status: ['READY', 'PROGRESS', 'DONE'],
       todos,
+      edit,
+      editTodo,
+      clearEdit,
 
       updateTodo,
       removeTodoItem,

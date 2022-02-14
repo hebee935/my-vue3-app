@@ -1,13 +1,13 @@
 <template>
   <Dialog ref="dialog">
-    <v-card>
-      <v-card-text>{{msg}}</v-card-text>
-      <v-divider class="mx-4" />
-      <v-card-actions class="justify-end">
-        <v-btn text @click="close(true)">Yes</v-btn>
-        <v-btn text @click="close(false)">No</v-btn>
-      </v-card-actions>
-    </v-card>
+    <q-card class="q-pa-md">
+      <q-card-section>{{msg}}</q-card-section>
+      <q-separator spaced/>
+      <q-card-actions align="center">
+        <q-btn @click="close(true)" label="Yes"/>
+        <q-btn @click="close(false)" label="No"/>
+      </q-card-actions>
+    </q-card>
   </Dialog>
 </template>
 <script lang="ts">

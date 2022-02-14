@@ -1,14 +1,14 @@
 <template>
   <Dialog ref="dialog">
-    <v-card>
+    <q-card class="q-pa-md">
+      <div class="row justify-end">
+        <q-btn flat @click="close" icon="clear"></q-btn>
+      </div>
       <Signin v-if="page.signin" v-on:close="close"/>
       <Signup v-if="page.signup" v-on:close="close"/>
-      <v-divider class="mx-4" />
-      <v-card-text @click="pageChange(getPageName())">or {{getPageName()}}</v-card-text>
-      <v-card-actions class="justify-end">
-        <v-btn text @click="close">Close</v-btn>
-      </v-card-actions>
-    </v-card>
+      <q-separator/>
+      <q-card-section class="text-center" @click="pageChange(getPageName())">or {{getPageName()}}</q-card-section>
+    </q-card>
   </Dialog>
 </template>
 <script lang="ts">

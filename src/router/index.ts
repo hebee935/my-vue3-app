@@ -1,43 +1,43 @@
 import { createRouter, createWebHistory, } from 'vue-router';
 
+export const routes = [
+  {
+    path:'/',
+    name: 'Main',
+    show: false,
+    component: () => import('@/components/Main.vue'),
+  },
+  {
+    path:'/card',
+    name: 'Card',
+    show: true,
+    icon: 'inbox',
+    component: () => import('@/components/card/CardList.vue'),
+  },
+  {
+    path:'/card/create',
+    name: 'CardCreate',
+    component: () => import('@/components/card/CardInput.vue'),
+  },
+  {
+    path:'/card/:cardid',
+    name: 'CardDetail',
+    component: () => import('@/components/card/CardDetail.vue'),
+  },
+  {
+    path:'/card/:cardid/update',
+    name: 'CardUpdate',
+    component: () => import('@/components/card/CardUpdate.vue'),
+  },
+  {
+    path:'/todo',
+    name: 'Todo',
+    show: true,
+    icon: 'check_box',
+    component: () => import('@/components/todo/TodoList.vue'),
+  },
+];
 export default createRouter({ //라우터 연결
   history : createWebHistory(),
-	routes:[
-		{
-			path:'/'
-            ,name: 'Main'
-			,component: () => import('@/components/Main.vue'),
-		},
-		{
-			path:'/card'
-            ,name: 'Card-list'
-			,component: () => import('@/components/card/CardList.vue'),
-		},
-        {
-			path:'/card/create'
-            ,name: 'Card-create'
-			,component: () => import('@/components/card/CardInput.vue'),
-		},
-		{
-			path:'/card/:cardid'
-            ,name: 'Card-detail'
-			,component: () => import('@/components/card/CardDetail.vue'),
-		},
-    {
-			path:'/card/:cardid/update'
-            ,name: 'Card-update'
-			,component: () => import('@/components/card/CardUpdate.vue'),
-		},
-        {
-			path:'/todo'
-            ,name: 'Todo-list'
-			,component: () => import('@/components/todo/TodoList.vue'),
-		},
-		{
-			path:'/schedule'
-            ,name: 'Schedule-calendar'
-			,component: () => import('@/components/schedule/ScheduleCalendar.vue'),
-		}
-
-	]
-})
+	routes,
+});

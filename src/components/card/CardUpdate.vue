@@ -1,58 +1,59 @@
 <template>
-  <v-card flat>
-    <v-card-header class="justify-end">
-      <v-btn @click="this.$router.push('/card')"><v-icon>mdi-close</v-icon></v-btn>
-    </v-card-header>
-    <v-card-text>
-      <v-form>
-        <v-text-field label="Title" v-model="state.card.title"/>
-        <!-- <v-file-input multiple label="Files"></v-file-input> -->
-        <Tiptap ref="editor" :contents="state.card.contents"/>
-      </v-form>
-    </v-card-text>
-    <v-card-actions class="justify-end">
-      <v-btn class="justify-end" @click="updateCardItem">Save</v-btn>
-    </v-card-actions>
-  </v-card>
+  <div class="q-pa-md q-gutter-sm">
+    <div class="row justify-end">
+      <q-btn flat @click="actions.back" icon="clear"/>
+    </div>
+
+    <q-form
+      @submit="updateCardItem"
+    >
+      <q-input v-model="card.title" label="Title" :rules="[ val => val && val.length > 0 || 'Please type something']"/>
+      <Editor ref="editor" :contents="card.contents"/>
+      <div class="row justify-end">
+        <q-btn label="Submit" type="submit"/>
+      </div>
+    </q-form>
+  </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onBeforeMount, } from 'vue';
+import { defineComponent, ref, onBeforeMount, computed, } from 'vue';
 import { useStore } from 'vuex';
 import { useRouter, useRoute, } from 'vue-router';
-import Tiptap from '@/components/tiptap/Editor.vue';
+import Editor from '@/components/common/Editor.vue';
 
 export default defineComponent({
   components: {
-    Tiptap,
+    Editor,
   },
   setup() {
     const store = useStore();
     const router = useRouter();
     const route = useRoute();
 
-    const state = ref<any>({
-      card: {},
-      loading: true,
-    });
+    const card = ref(computed(() => store.getters.getCardOne));
 
     onBeforeMount(async () => {
       await store.dispatch('setCardOne', route.params.cardid);
-      state.value.card = store.getters.getCardOne;
     });
 
-    const editor = ref<null | { getHTML: () => string }>(null);
+    const editor = ref<null | { getValue: () => string }>(null);
 
     async function updateCardItem() {
-      const contents = editor.value?.getHTML() || '';
-      state.value.card.contents = contents;
-      await store.dispatch('updateCard', state.value.card);
+      card.value.contents = editor.value?.getValue() || '';
+      await store.dispatch('updateCard', card.value);
       router.push('/card/' + route.params.cardid);
     }
+
+    const actions = {
+      back: () => router.push('/card'),
+    };
+
     return {
-      state,
+      card,
       editor,
       updateCardItem,
+      actions,
     };
   },
 

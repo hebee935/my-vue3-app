@@ -42,10 +42,12 @@ export const AuthModule: Module<AuthState, RootState> = {
     async signin({ commit }, input: ISignInInput) {
       const { success, data } = await sign.signin(input);
       if (success) commit('SET_USER', data);
+      return success;
     },
     async signup({ commit }, input: ISignUpInput) {
       const { success, data } = await sign.signup(input);
       if (success) commit('SET_USER', data);
+      return success;
     },
     async checkUid(_, uid: string): Promise<boolean> {
       const { success, } = await sign.checkUid(uid);

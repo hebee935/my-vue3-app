@@ -1,40 +1,27 @@
 <template>
-  <v-app full-height>
-    <Navigation/>
-    <v-main class="full-height">
-      <v-container fluid class="full-height">
-        <v-row justify="center" no-gutters class="full-height">
-          <v-col cols="12" sm="4">
-            <router-view/>
-          </v-col>
-        </v-row>
-      </v-container>
-    </v-main>
+  <q-layout view="hHh lpR fFf">
+    <Header />
+
+    <q-page-container class="q-pa-md">
+      <div class="row justify-center">
+        <div class="col-12 col-md-6">
+          <router-view />
+        </div>
+      </div>
+    </q-page-container>
+
     <Footer/>
-  </v-app>
+  </q-layout>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
-import Navigation from '@/components/common/Navigation.vue';
+<script>
+import Header from '@/components/common/Header.vue';
 import Footer from '@/components/common/Footer.vue';
 
-export default defineComponent({
-  name: 'App',
-
+export default {
   components: {
-    Navigation,
+    Header,
     Footer,
-  },
-  data () {
-    return {
-    }
-  },
-})
-</script>
-
-<style scoped>
-.full-height {
-  height:100%
+  }
 }
-</style>
+</script>

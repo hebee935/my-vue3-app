@@ -1,53 +1,74 @@
 <template>
-  <v-card flat v-for="parent in comments.parents" :key="parent._id">
-    <v-card-text>
-      <v-table>
-        <th class="text-left">
-          <p>{{ parent.user.nickname }}</p>
-          <p v-show="isWriter(parent.user._id)" class="writer">작성자</p>
-        </th>
-        <tr>{{ parent.message }}</tr>
-        <tr>
-          <p>{{ getDate(parent.createdAt) }}</p>
-          <v-divider vertical class="mx-1"/>
-          <v-btn @click="replyComment(parent._id)">
-            <font-awesome-icon icon="reply"/>
-          </v-btn>
-        </tr>
-      </v-table>
-      <v-divider/>
-      <div v-if="reply === parent._id">
+  <div>
+    <CommentInput :card="this.$props.card._id"/>
+  </div>
+  <q-separator inset spaced/>
+  <div>
+    <q-list v-for="parent in comments.parents" :key="parent._id">
+      <q-item>
+        <q-item-section top avatar>
+          <Avatar :user="parent.user" />
+        </q-item-section>
+        <q-item-section>
+          <q-item-label lines="1">
+            <span class="text-weight-medium">{{parent.user.nickname}}</span>
+            <span v-show="isWriter(parent.user._id)" class="text-grey-8"> 작성자</span>
+          </q-item-label>
+          <q-item-label>{{parent.message}}</q-item-label>
+          <div class="row">
+            <q-item-label caption>{{getDate(parent.createdAt)}}</q-item-label>
+            <q-separator vertical spaced color="white"/>
+            <q-icon name="reply" @click="replyComment(parent._id)"/>
+          </div>
+        </q-item-section>
+        <q-item-section side top>
+        </q-item-section>
+      </q-item>
+      <q-separator inset spaced/>
+      <div v-if="reply === parent._id" class="q-ml-lg" >
         <CommentInput :card="this.$props.card._id" :parent="parent._id" @success="close"/>
+        <q-separator inset spaced/>
       </div>
-      <v-card flat v-for="child in myChild(parent._id)" :key="child._id" class="pt-4">
-        <v-table class="pl-6">
-          <th class="text-left">
-            <p>{{ child.user.nickname }}</p>
-            <p v-show="isWriter(child.user._id)" class="writer">작성자</p>
-          </th>
-          <tr>{{ child.message }}</tr>
-          <tr>
-            <p>{{ getDate(child.createdAt) }}</p>
-            <v-divider vertical class="mx-1"/>
-          </tr>
-        </v-table>
-        <v-divider/>
-      </v-card>
-    </v-card-text>
-  </v-card>
+      <q-list v-for="child in myChild(parent._id)" :key="child._id" class="q-ml-lg">
+        <q-item>
+          <q-item-section top avatar>
+            <Avatar :user="child.user" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label lines="1">
+              <span class="text-weight-medium">{{child.user.nickname}}</span>
+              <span v-show="isWriter(child.user._id)" class="text-grey-8"> 작성자</span>
+            </q-item-label>
+            <q-item-label>{{child.message}}</q-item-label>
+            <div class="row">
+              <q-item-label caption>{{getDate(child.createdAt)}}</q-item-label>
+              <q-separator vertical spaced color="white"/>
+              <q-icon name="reply" @click="replyComment(parent._id)"/>
+            </div>
+          </q-item-section>
+          <q-item-section side top>
+          </q-item-section>
+        </q-item>
+        <q-separator inset spaced/>
+      </q-list>
+    </q-list>
+  </div>
 </template>
 
 <script lang="ts">
 import { computed, defineComponent, onBeforeMount, ref, } from 'vue';
 import { useStore } from 'vuex';
-import moment from 'moment';
 
 import CommentInput from '@/components/comment/CommentInput.vue';
+import Avatar from '@/components/user/Avatar.vue';
 import { IComment } from '@/interfaces/comment';
+
+import { getDate } from '@/lib/utils';
 
 export default defineComponent({
   components: {
     CommentInput,
+    Avatar,
   },
   props: {
     card: {
@@ -75,7 +96,6 @@ export default defineComponent({
     };
     const close = () => reply.value = '';
 
-    const getDate = (date: Date) => moment(date).format('YYYY.MM.DD');
     const isWriter = (userid: string) => userid === props.card.user._id;
 
     return {

@@ -1,5 +1,6 @@
 import axios from 'axios';
-import Cookies from 'js-cookie';
+import { useCookies } from 'vue3-cookies';
+const { cookies } = useCookies();
 
 import config from '../../config';
 
@@ -10,7 +11,7 @@ import todo from './todo';
 import comment from './comment';
 
 export const authHeader = () => {
-  const token = Cookies.get('token');
+  const token = cookies.get('token');
   return { Authorization: 'Bearer ' + token, };
 };
 

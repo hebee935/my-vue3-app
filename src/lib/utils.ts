@@ -27,5 +27,7 @@ export const timeForToday = (time: Date) => {
 };
 
 export const getDate = (date: Date) => {
-  return moment(date).format('YYYY.MM.DD');
+  const today = moment().startOf('day');
+  const format = today.diff(moment(date).startOf('day')) ? 'YYYY.MM.DD' : 'HH:mm';
+  return moment(date).format(format);
 };

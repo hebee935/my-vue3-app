@@ -1,10 +1,10 @@
 <template>
-  <v-dialog
+  <q-dialog
     v-model="dialog"
     persistent
   >
     <slot></slot>
-  </v-dialog>
+  </q-dialog>
 </template>
 <script>
 import { defineComponent, ref, } from 'vue';

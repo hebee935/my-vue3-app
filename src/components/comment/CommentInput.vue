@@ -1,16 +1,25 @@
 <template>
-  <v-card flat variant="outlined" class="mx-auto">
-    <v-card-text>
-    <p class="font-weight-bold">{{me.nickname}}</p>
-    <v-textarea v-model="comment.message" rows="1" auto-grow/>
-    <v-btn @click="addCommentItem" text>Add</v-btn>
-    </v-card-text>
-  </v-card>
+  <div class="q-pa-md">
+    <q-input outlined v-model="comment.message" autogrow>
+      <template v-slot:before>
+        <div class="col">
+          <Avatar />
+          <div class="text-overline text-center">{{me.nickname}}</div>
+        </div>
+      </template>
+      <template v-slot:after>
+        <q-btn flat icon="send" @click="addCommentItem">
+        </q-btn>
+      </template>
+    </q-input>
+  </div>
 </template>
 
 <script lang="ts">
 import { computed, defineComponent, ref, } from 'vue';
 import { useStore } from 'vuex';
+
+import Avatar from '@/components/user/Avatar.vue';
 
 export default defineComponent({
   props: {
@@ -22,6 +31,9 @@ export default defineComponent({
       type: String,
       default: null,
     }
+  },
+  components: {
+    Avatar,
   },
   setup(props, { emit }) {
     const store = useStore();
