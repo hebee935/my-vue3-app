@@ -14,6 +14,10 @@
           <Avatar size="25px" />
           {{me.nickname}}님
           <q-menu fit>
+            <q-item clickable v-close-popup @click="actions.goUserSetting">
+              <q-item-section>Setting</q-item-section>
+            </q-item>
+            <q-separator inset spaced />
             <q-item clickable v-close-popup @click="actions.signout">
               <q-item-section>Sign Out</q-item-section>
             </q-item>
@@ -80,6 +84,9 @@ export default {
     }
 
     const actions = {
+      goUserSetting: () => {
+        router.push('/user/setting');
+      },
       signout: () => {
         store.commit('SIGNOUT');
         router.go(0);

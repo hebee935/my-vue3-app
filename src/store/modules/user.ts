@@ -9,7 +9,7 @@ export interface UserState {
   user: IUser | null;
 }
 
-export const UserModule: Module < UserState, RootState > = {
+export const UserModule: Module <UserState, RootState> = {
   state: {
     list: [],
     user: null,
@@ -28,6 +28,10 @@ export const UserModule: Module < UserState, RootState > = {
     },
     ADD_USER(state, user) {
       state.list.push(user);
+    },
+    UPDATE_USER(state, user) {
+      const idx = state.list.findIndex(c => c._id === user._id);
+      state.list[idx] = user;
     },
     // DELETE_USER(state, id) {
     //     const idx = state.list.findIndex(c => c._id === id);
@@ -51,16 +55,15 @@ export const UserModule: Module < UserState, RootState > = {
         }
       }
     },
-    // updateUser({
-    //   commit
-    // }, input) {
-    //   axios.put(`${config.server.apiV1}/user/${input._id}`, input)
-    //     .then(res => {
-    //       commit('UPDATE_USER', res.data.data);
-    //     }).catch(err => {
-    //       console.log(err);
-    //     });
-    // },
+    async updateUser({ commit, rootState }, input) {
+      const { success, data, } = await user.updateUser(input._id, input);
+      console.log('data', data);
+      if (success) {
+        console.log('root', rootState)
+        rootState.auth.me = data;
+        commit('UPDATE_USER', data);
+      }
+    },
     // deleteUser({
     //   commit
     // }, id) {

@@ -8,6 +8,12 @@ export const routes = [
     component: () => import('@/components/Main.vue'),
   },
   {
+    path:'/user/setting',
+    name: 'UserSetting',
+    show: false,
+    component: () => import('@/components/user/UserSetting.vue'),
+  },
+  {
     path:'/card',
     name: 'Card',
     show: true,
