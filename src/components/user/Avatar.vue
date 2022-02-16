@@ -7,7 +7,8 @@
 
 <script lang="ts">
 import store from '@/store';
-import { computed, defineComponent, onBeforeMount, ref } from 'vue';
+import { computed, defineComponent, ref } from 'vue';
+import config from '../../../config';
 
 export default defineComponent({
   props: {
@@ -22,13 +23,7 @@ export default defineComponent({
   },
   setup(props) {
     const user = ref(props.user || computed(() => store.getters.getMyInfo));
-    const image = ref(null);
-    onBeforeMount(async () => {
-      if (user.value.avatar) {
-        const filedata = await store.dispatch('getFileObject', user.value.avatar);
-        updateView(filedata);
-      }
-    });
+    const image = ref(user.value.avatar ? `${config.server.apiV1}/file/${user.value.avatar}/object` : '');
 
     const updateView = (file: any) => {
       const reader = new FileReader();

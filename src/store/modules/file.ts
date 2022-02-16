@@ -32,6 +32,9 @@ export const FileModule: Module<FileState, RootState> = {
     ADD_FILE(state, file: IFile) {
       state.list.push(file);
     },
+    ADD_FILES(state, files: [IFile]) {
+      state.list = [...state.list, ...files];
+    },
     UPDATE_FILE(state, file: IFile) {
       const idx = state.list.findIndex(c => c._id === file._id);
       state.list[idx] = file;
@@ -63,8 +66,8 @@ export const FileModule: Module<FileState, RootState> = {
     async addFile({ commit, }, input) {
       const { success, data } = await file.uploadFile(input);
       if (success) {
-        commit('ADD_FILE', data[0]);
-        return data[0];
+        commit('ADD_FILES', data);
+        return data;
       }
     },
     async getFileObject(_, fileid) {

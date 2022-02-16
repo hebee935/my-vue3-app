@@ -12,5 +12,5 @@ export interface IFile {
 
 export interface IFileInput {
   category: string;
-  file: any;
+  files: any;
 }

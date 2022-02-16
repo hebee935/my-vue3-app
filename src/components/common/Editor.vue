@@ -7,7 +7,7 @@
         upload: {
           tip: 'Upload image',
           icon: 'image',
-          handler: uploadIt,
+          handler: open,
         }
       }"
       :toolbar="[
@@ -79,11 +79,15 @@
       }"
     />
     </div>
+    <ImagePicker ref="picker" @changed="getImages" :multiple="true"/>
 </template>
 
-<script>
+<script lang="ts">
 import { ref } from 'vue';
-import { useQuasar } from 'quasar';
+
+import ImagePicker from '@/components/common/ImagePicker.vue';
+import store from '@/store';
+import { IFile } from '@/interfaces/file';
 
 export default {
   props: {
@@ -92,26 +96,40 @@ export default {
       default: '',
     }
   },
-  setup (props) {
-    const $q = useQuasar();
+  components: {
+    ImagePicker,
+  },
+  setup (props: any) {
     const qeditor = ref(props.contents);
     const getValue = () => qeditor.value;
 
-    function uploadIt () {
-      $q.notify({
-        message: 'Server unavailable. Check connectivity.',
-        color: 'red-5',
-        textColor: 'white',
-        icon: 'warning'
-      })
-    }
+    const picker = ref<null | { open: () => null, getImages: () => any }>(null);
+    const open = () => picker.value?.open();
 
+    const getImages = async () => {
+      const images = picker.value?.getImages();
+      const newfiles = await store.dispatch('addFile', { category: 'card', files: images });
+      let ctx = '';
+      newfiles.forEach((file:IFile) => {
+        ctx += `
+        <div class="image_view">
+          <img src="${file.path}"/>
+        </div>
+        `;
+      });
+      qeditor.value += ctx;
+    };
 
     return {
       qeditor,
       getValue,
-      uploadIt,
+
+      picker,
+      open,
+      getImages,
     };
   }
 }
 </script>
+<style scoped>
+</style>

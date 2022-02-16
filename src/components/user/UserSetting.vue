@@ -12,8 +12,8 @@
                 <Avatar size="100px" ref="avatar"/>
               </div>
               <div v-show="editMode">
-                <input type="file" ref="uploader" accept="image/*" style="display: none;" @change="changeImage"/>
-                <q-btn label="Upload Image" @click="$refs.uploader.click()"/>
+                <ImagePicker ref="picker" @changed="getImages" />
+                <q-btn label="Upload Image" @click="open"/>
               </div>
             </div>
           </div>
@@ -33,13 +33,16 @@
 </template>
 
 <script lang="ts">
-import Avatar from '@/components/user/Avatar.vue';
 import { computed, ref } from 'vue';
 import { useStore } from 'vuex';
 
+import Avatar from '@/components/user/Avatar.vue';
+import ImagePicker from '@/components/common/ImagePicker.vue';
+
 export default {
   components: {
-    Avatar
+    Avatar,
+    ImagePicker,
   },
   setup() {
     const store = useStore();
@@ -49,15 +52,18 @@ export default {
     const file = ref<any>(null);
     const avatar = ref<null | { updateView(file: any): null }>(null);
 
-    function changeImage(e: any) {
-      const files = e.target.files;
-      file.value = files[0];
-      avatar.value?.updateView(files[0]);
-    }
+    const picker = ref<null | { open: () => null, getImages: () => any }>(null);
+    const open = () => picker.value?.open();
+
+    const getImages = async () => {
+      const images = picker.value?.getImages();
+      file.value = images;
+      avatar.value?.updateView(images[0]);
+    };
+
     async function updateUser() {
       if (file.value) {
-        const newfile = await store.dispatch('addFile', { category: 'avatar', file: file.value }, { root: true });
-        console.log('new', newfile)
+        const [newfile] = await store.dispatch('addFile', { category: 'avatar', files: file.value });
         me.value.avatar = newfile._id;
       }
       await store.dispatch('updateUser', me.value);
@@ -67,9 +73,11 @@ export default {
     return {
       me,
       avatar,
+      picker,
       editMode,
-      changeImage,
+      getImages,
       updateUser,
+      open,
     }
   }
 }

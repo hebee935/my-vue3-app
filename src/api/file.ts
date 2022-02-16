@@ -8,7 +8,9 @@ export default {
   getFileObject:  async (id: string): Promise<IRes> => (await api.get(`file/${id}/object`, { headers: authHeader(), responseType: 'blob' }))?.data,
   uploadFile: async (input: IFileInput): Promise<IRes> => {
     const frm = new FormData();
-    frm.append('file', input.file);
+    Object.values(input.files).forEach((file: any) => {
+      frm.append('file', file);
+    });
     frm.append('category', input.category);
     return (await api.post('file', frm, { headers: {...authHeader(), ...{ 'Content-Type': 'multipart/form-data' }}, }))?.data
   },
