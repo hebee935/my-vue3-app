@@ -26,6 +26,9 @@
       <q-separator inset />
 
       <q-card-section v-html="card.contents"/>
+      <q-card-section>
+        <TagList :card="card"/>
+      </q-card-section>
 
       <q-separator />
 
@@ -42,19 +45,19 @@ import { computed, defineComponent, onBeforeMount, ref, } from 'vue';
 import { useRoute, useRouter, } from 'vue-router';
 import { useStore } from 'vuex';
 
-import CommentInput from '@/components/comment/CommentInput.vue';
 import CommentList from '@/components/comment/CommentList.vue';
 import AskDialog from '@/components/common/AskDialog.vue';
 import Avatar from '@/components/user/Avatar.vue';
+import TagList from '@/components/tag/TagList.vue';
 
 import { getDate } from '@/lib/utils';
 
 export default defineComponent({
   components: {
-    CommentInput,
     CommentList,
     AskDialog,
     Avatar,
+    TagList,
   },
   setup() {
     const store = useStore();

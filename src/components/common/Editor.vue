@@ -113,7 +113,7 @@ export default {
       newfiles.forEach((file:IFile) => {
         ctx += `
         <div class="image_view">
-          <img src="${file.path}"/>
+          <img src="${file.path}" style="max-width:600px;"/>
         </div>
         `;
       });

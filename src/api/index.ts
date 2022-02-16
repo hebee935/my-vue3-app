@@ -10,6 +10,7 @@ import card from './card';
 import todo from './todo';
 import comment from './comment';
 import file from './file';
+import tag from './tag';
 
 export const authHeader = () => {
   const token = cookies.get('token');
@@ -28,4 +29,5 @@ export {
   user,
   comment,
   file,
+  tag,
 };

@@ -7,6 +7,7 @@ import { UserModule as user, UserState, } from './modules/user';
 import { AuthModule as auth, AuthState, } from './modules/auth';
 import { CommentModule as comment, CommentState, } from './modules/comment';
 import { FileModule as file, FileState, } from './modules/file';
+import { TagModule as tag, TagState, } from './modules/tag';
 
 export interface RootState {
   todo: TodoState;
@@ -15,6 +16,7 @@ export interface RootState {
   auth: AuthState;
   comment: CommentState;
   file: FileState;
+  tag: TagState;
 }
 
 export default createStore({
@@ -25,6 +27,7 @@ export default createStore({
     auth,
     comment,
     file,
+    tag,
   },
   plugins: [
     createPersistedState(),

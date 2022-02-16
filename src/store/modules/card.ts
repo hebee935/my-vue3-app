@@ -61,15 +61,18 @@ export const CardModule: Module<CardState, RootState> = {
       }
     },
     async addCard({ commit, }, input) {
-        const { success, data } = await card.createCard(input);
-        if (success) {
-            commit('ADD_CARD', data);
-            return data;
-        }
+      const { success, data } = await card.createCard(input);
+      if (success) {
+          commit('ADD_CARD', data);
+          return data;
+      }
     },
     async updateCard({ commit, }, input) {
-        const { success, data } = await card.updateCard(input._id, input);
-        if (success) commit('UPDATE_CARD', data);
+      const { success, data } = await card.updateCard(input._id, input);
+      if (success) {
+        commit('UPDATE_CARD', data);
+        return data;
+      }
     },
     async deleteCard({ commit, }, id) {
       const success = await card.deleteCard(id);
